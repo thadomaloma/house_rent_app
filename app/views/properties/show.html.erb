@@ -1,0 +1,104 @@
+<% content_for :title, "#{@property.title} - Inluah" %>
+
+<section class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+  <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <p class="text-sm font-black uppercase text-emerald-700"><%= property_area_label(@property) %> · <%= property_type_label(@property) %></p>
+      <h1 class="mt-1 max-w-4xl text-3xl font-black tracking-tight sm:text-5xl"><%= @property.title %></h1>
+    </div>
+    <div class="flex items-center gap-2">
+      <%= render "properties/favorite_button", property: @property %>
+      <% if user_signed_in? && (admin_user? || @property.user == current_user) %>
+        <%= link_to "Edit", edit_property_path(@property), class: "rounded-2xl bg-slate-950 px-5 py-3 text-sm font-black text-white hover:bg-emerald-700" %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="grid gap-3 overflow-hidden rounded-3xl bg-slate-200 lg:grid-cols-[1.45fr_0.55fr]">
+    <div class="aspect-[4/3] bg-emerald-50 lg:aspect-[16/10]">
+      <% if @property.photos.attached? %>
+        <%= image_tag @property.photos.first, class: "h-full w-full object-cover", alt: @property.title %>
+      <% else %>
+        <%= image_tag "/fallback-property.svg", class: "h-full w-full object-cover", alt: "Inluah property placeholder" %>
+      <% end %>
+    </div>
+    <div class="grid grid-cols-2 gap-3 bg-slate-200 lg:grid-cols-1">
+      <% if @property.photos.attached? && @property.photos.drop(1).any? %>
+        <% @property.photos.drop(1).first(2).each do |photo| %>
+          <div class="aspect-[4/3] bg-emerald-50 lg:aspect-auto">
+            <%= image_tag photo, class: "h-full w-full object-cover", alt: @property.title %>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="grid place-items-center bg-white p-6 text-center">
+          <p class="text-sm font-black text-slate-500">Photos coming soon</p>
+        </div>
+        <div class="grid place-items-center bg-emerald-50 p-6 text-center">
+          <p class="text-sm font-black text-emerald-700">Verified by owner</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<section class="mx-auto grid max-w-7xl gap-6 px-4 pb-10 sm:px-6 lg:grid-cols-[1fr_380px] lg:px-8">
+  <div class="space-y-6">
+    <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div class="mb-5 flex flex-wrap items-center gap-2">
+        <span class="rounded-full px-3 py-1 text-xs font-black ring-1 <%= status_badge_classes(@property) %>"><%= @property.status.humanize %></span>
+        <% if @property.featured? %>
+          <span class="rounded-full bg-emerald-600 px-3 py-1 text-xs font-black text-white">Featured</span>
+        <% end %>
+        <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-600"><%= pluralize(@property.views_count, "view") %></span>
+      </div>
+      <p class="whitespace-pre-line text-base leading-8 text-slate-600"><%= @property.description %></p>
+    </div>
+
+    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-slate-200"><p class="text-xs font-black uppercase text-slate-500">Rent</p><p class="mt-2 text-2xl font-black"><%= rupees(@property.rent) %></p></div>
+      <div class="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-slate-200"><p class="text-xs font-black uppercase text-slate-500">Deposit</p><p class="mt-2 text-2xl font-black"><%= rupees(@property.deposit) %></p></div>
+      <div class="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-slate-200"><p class="text-xs font-black uppercase text-slate-500">Bedrooms</p><p class="mt-2 text-2xl font-black"><%= @property.bedrooms %></p></div>
+      <div class="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-slate-200"><p class="text-xs font-black uppercase text-slate-500">Bathrooms</p><p class="mt-2 text-2xl font-black"><%= @property.bathrooms %></p></div>
+    </div>
+
+    <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+      <h2 class="text-2xl font-black tracking-tight">Location details</h2>
+      <dl class="mt-5 grid gap-4 text-sm sm:grid-cols-2">
+        <div><dt class="font-black uppercase text-slate-400">Area</dt><dd class="mt-1 font-bold text-slate-700"><%= property_area_label(@property) %></dd></div>
+        <div><dt class="font-black uppercase text-slate-400">Address</dt><dd class="mt-1 font-bold text-slate-700"><%= @property.address %></dd></div>
+        <div><dt class="font-black uppercase text-slate-400">Floor</dt><dd class="mt-1 font-bold text-slate-700"><%= @property.floor.presence || "Not specified" %></dd></div>
+        <div><dt class="font-black uppercase text-slate-400">Available from</dt><dd class="mt-1 font-bold text-slate-700"><%= @property.available_from&.to_fs(:long) || "Immediately" %></dd></div>
+      </dl>
+    </div>
+  </div>
+
+  <aside class="lg:sticky lg:top-24 lg:self-start">
+    <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-xl shadow-slate-950/5">
+      <p class="text-xs font-black uppercase text-emerald-700">Contact owner</p>
+      <h2 class="mt-1 text-2xl font-black"><%= @property.contact_name %></h2>
+      <div class="mt-5 grid grid-cols-2 gap-3">
+        <%= link_to "Call", "tel:#{@property.phone}", class: "rounded-2xl bg-slate-950 px-4 py-3 text-center text-sm font-black text-white hover:bg-emerald-700" %>
+        <% if @property.whatsapp_number.present? %>
+          <%= link_to "WhatsApp", "https://wa.me/#{@property.whatsapp_number.gsub(/\D/, "")}", target: "_blank", rel: "noopener", class: "rounded-2xl bg-emerald-600 px-4 py-3 text-center text-sm font-black text-white hover:bg-emerald-700" %>
+        <% end %>
+      </div>
+
+      <%= form_with model: @inquiry, url: inquiries_path, class: "mt-6 space-y-3" do |form| %>
+        <%= form.hidden_field :property_id, value: @property.id %>
+        <div>
+          <%= form.label :name, class: "mb-1 block text-xs font-black uppercase text-slate-500" %>
+          <%= form.text_field :name, required: true, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm font-semibold outline-none focus:border-emerald-400 focus:ring-4 focus:ring-emerald-500/20" %>
+        </div>
+        <div>
+          <%= form.label :phone, class: "mb-1 block text-xs font-black uppercase text-slate-500" %>
+          <%= form.telephone_field :phone, required: true, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm font-semibold outline-none focus:border-emerald-400 focus:ring-4 focus:ring-emerald-500/20" %>
+        </div>
+        <div>
+          <%= form.label :message, class: "mb-1 block text-xs font-black uppercase text-slate-500" %>
+          <%= form.text_area :message, rows: 4, required: true, placeholder: "I am interested in this property.", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm font-semibold outline-none focus:border-emerald-400 focus:ring-4 focus:ring-emerald-500/20" %>
+        </div>
+        <%= form.submit "Send inquiry", class: "w-full rounded-2xl bg-emerald-600 px-5 py-3 text-sm font-black text-white shadow-lg shadow-emerald-600/20 hover:bg-emerald-700" %>
+      <% end %>
+    </div>
+  </aside>
+</section>

@@ -1,0 +1,20 @@
+<% content_for :title, "Favorites - Inluah" %>
+
+<section class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+  <div class="mb-6">
+    <p class="text-xs font-black uppercase text-emerald-700">Saved homes</p>
+    <h1 class="text-3xl font-black tracking-tight">Your favorites</h1>
+  </div>
+
+  <% if @properties.any? %>
+    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <%= render partial: "properties/card", collection: @properties, as: :property %>
+    </div>
+  <% else %>
+    <div class="rounded-3xl border border-dashed border-slate-300 bg-white p-10 text-center">
+      <h2 class="text-2xl font-black">No favorites yet</h2>
+      <p class="mt-2 text-sm font-semibold text-slate-500">Save listings you want to revisit later.</p>
+      <%= link_to "Browse rentals", properties_path, class: "mt-5 inline-flex rounded-2xl bg-emerald-600 px-5 py-3 text-sm font-black text-white" %>
+    </div>
+  <% end %>
+</section>

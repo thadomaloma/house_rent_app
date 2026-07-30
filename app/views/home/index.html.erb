@@ -1,0 +1,68 @@
+<% content_for :title, "Inluah - Find rentals in Aizawl" %>
+
+<section class="relative overflow-hidden bg-slate-950">
+  <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.32),transparent_38%),linear-gradient(135deg,rgba(15,23,42,0.96),rgba(6,78,59,0.88))]"></div>
+  <div class="relative mx-auto grid max-w-7xl gap-10 px-4 py-10 sm:px-6 md:grid-cols-[1.05fr_0.95fr] md:py-16 lg:px-8">
+    <div class="flex flex-col justify-center pb-2 text-white">
+      <p class="mb-4 inline-flex w-fit rounded-full bg-white/10 px-4 py-2 text-xs font-black uppercase tracking-wide text-emerald-100 ring-1 ring-white/15">Aizawl and Mizoram rentals</p>
+      <h1 class="max-w-3xl text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">Find a home that fits your Aizawl life.</h1>
+      <p class="mt-5 max-w-2xl text-base leading-7 text-emerald-50/85 sm:text-lg">Search rooms, apartments, houses, offices, shops, and PG stays across Chanmari, Dawrpui, Ramhlun, Bawngkawn, Durtlang and beyond.</p>
+      <div class="mt-8 grid grid-cols-3 gap-3 text-center">
+        <div class="rounded-3xl bg-white/10 p-4 ring-1 ring-white/10"><span class="block text-2xl font-black"><%= Property.visible.count %></span><span class="text-xs font-bold text-emerald-100">Listings</span></div>
+        <div class="rounded-3xl bg-white/10 p-4 ring-1 ring-white/10"><span class="block text-2xl font-black">13</span><span class="text-xs font-bold text-emerald-100">Areas</span></div>
+        <div class="rounded-3xl bg-white/10 p-4 ring-1 ring-white/10"><span class="block text-2xl font-black">₹5k+</span><span class="text-xs font-bold text-emerald-100">Rent</span></div>
+      </div>
+    </div>
+
+    <div class="self-end rounded-3xl bg-white p-4 shadow-2xl shadow-emerald-950/40 sm:p-6">
+      <div class="mb-5 flex items-center justify-between">
+        <div>
+          <p class="text-xs font-black uppercase text-emerald-700">Quick search</p>
+          <h2 class="text-2xl font-black tracking-tight">Where in Aizawl?</h2>
+        </div>
+        <span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-black text-emerald-700">Live</span>
+      </div>
+      <%= render "shared/search_form" %>
+    </div>
+  </div>
+</section>
+
+<section class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+  <div class="mb-6 flex items-end justify-between gap-4">
+    <div>
+      <p class="text-xs font-black uppercase text-emerald-700">Featured</p>
+      <h2 class="text-3xl font-black tracking-tight">Premium listings</h2>
+    </div>
+    <%= link_to "View all", properties_path, class: "rounded-full bg-white px-4 py-2 text-sm font-black text-slate-700 shadow-sm ring-1 ring-slate-200 hover:text-emerald-700" %>
+  </div>
+  <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    <%= render partial: "properties/card", collection: @featured_properties.presence || @latest_properties, as: :property %>
+  </div>
+</section>
+
+<section class="bg-white py-10">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="mb-6">
+      <p class="text-xs font-black uppercase text-emerald-700">Popular areas</p>
+      <h2 class="text-3xl font-black tracking-tight">Browse by locality</h2>
+    </div>
+    <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+      <% @popular_areas.each do |area| %>
+        <%= link_to properties_path(area: area), class: "group rounded-3xl border border-slate-200 bg-slate-50 p-5 shadow-sm hover:border-emerald-200 hover:bg-emerald-50" do %>
+          <span class="block text-lg font-black text-slate-950 group-hover:text-emerald-800"><%= area.humanize.titleize %></span>
+          <span class="mt-2 block text-sm font-semibold text-slate-500"><%= Property.visible.public_send(area).count %> available</span>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<section class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+  <div class="mb-6">
+    <p class="text-xs font-black uppercase text-emerald-700">Fresh arrivals</p>
+    <h2 class="text-3xl font-black tracking-tight">Recently posted homes</h2>
+  </div>
+  <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+    <%= render partial: "properties/card", collection: @latest_properties, as: :property %>
+  </div>
+</section>

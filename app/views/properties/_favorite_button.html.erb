@@ -1,0 +1,18 @@
+<%= turbo_frame_tag dom_id(property, :favorite) do %>
+  <% if user_signed_in? %>
+    <% favorite = favorite_for(property) %>
+    <% if favorite %>
+      <%= button_to favorite_path(favorite), method: :delete, class: "grid size-11 place-items-center rounded-full bg-rose-50 text-rose-600 shadow-sm ring-1 ring-rose-100 hover:bg-rose-100", aria: { label: "Remove favorite" } do %>
+        <svg class="size-5 fill-current" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 1 0-7.8 7.8l8.8 8.8 8.8-8.8a5.5 5.5 0 0 0 0-7.8Z"/></svg>
+      <% end %>
+    <% else %>
+      <%= button_to favorites_path, params: { property_id: property.id }, class: "grid size-11 place-items-center rounded-full bg-white text-slate-600 shadow-sm ring-1 ring-slate-200 hover:text-rose-600", aria: { label: "Add favorite" } do %>
+        <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 1 0-7.8 7.8l8.8 8.8 8.8-8.8a5.5 5.5 0 0 0 0-7.8Z"/></svg>
+      <% end %>
+    <% end %>
+  <% else %>
+    <%= link_to new_user_session_path, class: "grid size-11 place-items-center rounded-full bg-white text-slate-600 shadow-sm ring-1 ring-slate-200 hover:text-rose-600", aria: { label: "Login to favorite" } do %>
+      <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 1 0-7.8 7.8l8.8 8.8 8.8-8.8a5.5 5.5 0 0 0 0-7.8Z"/></svg>
+    <% end %>
+  <% end %>
+<% end %>

@@ -1,0 +1,31 @@
+<%= form_with url: properties_path, method: :get, class: local_assigns.fetch(:classes, "grid gap-3") do |form| %>
+  <div>
+    <%= form.label :q, "Search", class: "mb-1 block text-xs font-black uppercase text-slate-500" %>
+    <%= form.search_field :q, value: params[:q], placeholder: "Keyword, address, landmark", class: "w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold outline-none ring-emerald-500/20 placeholder:text-slate-400 focus:border-emerald-400 focus:ring-4" %>
+  </div>
+  <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+    <div>
+      <%= form.label :area, "Area", class: "mb-1 block text-xs font-black uppercase text-slate-500" %>
+      <%= form.select :area, options_for_select([["Any area", ""]] + Property.area_options, params[:area]), {}, class: "w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold outline-none focus:border-emerald-400 focus:ring-4 focus:ring-emerald-500/20" %>
+    </div>
+    <div>
+      <%= form.label :property_type, "Type", class: "mb-1 block text-xs font-black uppercase text-slate-500" %>
+      <%= form.select :property_type, options_for_select([["Any type", ""]] + Property.property_type_options, params[:property_type]), {}, class: "w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold outline-none focus:border-emerald-400 focus:ring-4 focus:ring-emerald-500/20" %>
+    </div>
+  </div>
+  <div class="grid grid-cols-3 gap-3">
+    <div>
+      <%= form.label :min_rent, "Min", class: "mb-1 block text-xs font-black uppercase text-slate-500" %>
+      <%= form.number_field :min_rent, value: params[:min_rent], placeholder: "5000", class: "w-full rounded-2xl border border-slate-200 bg-white px-3 py-3 text-sm font-bold outline-none focus:border-emerald-400 focus:ring-4 focus:ring-emerald-500/20" %>
+    </div>
+    <div>
+      <%= form.label :max_rent, "Max", class: "mb-1 block text-xs font-black uppercase text-slate-500" %>
+      <%= form.number_field :max_rent, value: params[:max_rent], placeholder: "35000", class: "w-full rounded-2xl border border-slate-200 bg-white px-3 py-3 text-sm font-bold outline-none focus:border-emerald-400 focus:ring-4 focus:ring-emerald-500/20" %>
+    </div>
+    <div>
+      <%= form.label :bedrooms, "Beds", class: "mb-1 block text-xs font-black uppercase text-slate-500" %>
+      <%= form.number_field :bedrooms, value: params[:bedrooms], min: 0, placeholder: "2", class: "w-full rounded-2xl border border-slate-200 bg-white px-3 py-3 text-sm font-bold outline-none focus:border-emerald-400 focus:ring-4 focus:ring-emerald-500/20" %>
+    </div>
+  </div>
+  <%= form.submit "Find rentals", class: "w-full rounded-2xl bg-emerald-600 px-5 py-3 text-sm font-black text-white shadow-lg shadow-emerald-600/20 hover:bg-emerald-700" %>
+<% end %>

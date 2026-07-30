@@ -1,0 +1,45 @@
+<% content_for :title, "Sign up - Inluah" %>
+
+<section class="mx-auto grid min-h-[calc(100vh-5rem)] max-w-6xl items-center gap-8 px-4 py-8 sm:px-6 lg:grid-cols-2 lg:px-8">
+  <div class="hidden lg:block">
+    <p class="text-xs font-black uppercase text-emerald-700">Join Inluah</p>
+    <h1 class="mt-3 text-5xl font-black tracking-tight">Find a rental or list your property in Aizawl.</h1>
+    <p class="mt-5 max-w-xl text-lg leading-8 text-slate-600">Create a tenant account to save homes, or choose owner to publish listings and receive inquiries.</p>
+  </div>
+
+  <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-xl shadow-slate-950/5 sm:p-8">
+    <h2 class="text-3xl font-black tracking-tight">Create account</h2>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "mt-6 space-y-4" }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+      <div>
+        <%= f.label :name, class: "mb-1 block text-xs font-black uppercase text-slate-500" %>
+        <%= f.text_field :name, autofocus: true, autocomplete: "name", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm font-semibold outline-none focus:border-emerald-400 focus:ring-4 focus:ring-emerald-500/20" %>
+      </div>
+      <div>
+        <%= f.label :phone, class: "mb-1 block text-xs font-black uppercase text-slate-500" %>
+        <%= f.telephone_field :phone, autocomplete: "tel", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm font-semibold outline-none focus:border-emerald-400 focus:ring-4 focus:ring-emerald-500/20" %>
+      </div>
+      <div>
+        <%= f.label :role, class: "mb-1 block text-xs font-black uppercase text-slate-500" %>
+        <%= f.select :role, [["Tenant", "tenant"], ["Property owner", "owner"]], {}, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm font-bold outline-none focus:border-emerald-400 focus:ring-4 focus:ring-emerald-500/20" %>
+      </div>
+      <div>
+        <%= f.label :email, class: "mb-1 block text-xs font-black uppercase text-slate-500" %>
+        <%= f.email_field :email, autocomplete: "email", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm font-semibold outline-none focus:border-emerald-400 focus:ring-4 focus:ring-emerald-500/20" %>
+      </div>
+      <div>
+        <%= f.label :password, class: "mb-1 block text-xs font-black uppercase text-slate-500" %>
+        <%= f.password_field :password, autocomplete: "new-password", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm font-semibold outline-none focus:border-emerald-400 focus:ring-4 focus:ring-emerald-500/20" %>
+        <% if @minimum_password_length %><p class="mt-1 text-xs font-semibold text-slate-500"><%= @minimum_password_length %> characters minimum</p><% end %>
+      </div>
+      <div>
+        <%= f.label :password_confirmation, class: "mb-1 block text-xs font-black uppercase text-slate-500" %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm font-semibold outline-none focus:border-emerald-400 focus:ring-4 focus:ring-emerald-500/20" %>
+      </div>
+      <%= f.submit "Create account", class: "w-full rounded-2xl bg-emerald-600 px-5 py-3 text-sm font-black text-white shadow-lg shadow-emerald-600/20 hover:bg-emerald-700" %>
+    <% end %>
+    <div class="mt-5 text-sm font-bold text-slate-600">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+</section>

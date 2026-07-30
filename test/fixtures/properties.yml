@@ -1,0 +1,39 @@
+chanmari_flat:
+  title: Chanmari test flat
+  description: Clean apartment with good road access.
+  property_type: 1
+  rent: 18000
+  deposit: 20000
+  area: 0
+  address: Chanmari, Aizawl
+  bedrooms: 2
+  bathrooms: 1
+  floor: 1st
+  available_from: 2026-06-17
+  contact_name: Owner User
+  phone: "+919612300002"
+  whatsapp_number: "+919612300002"
+  status: 0
+  featured: true
+  user: owner
+  views_count: 4
+
+hidden_room:
+  title: Hidden room
+  description: Not visible publicly.
+  property_type: 2
+  rent: 7000
+  deposit: 7000
+  area: 1
+  address: Dawrpui, Aizawl
+  bedrooms: 1
+  bathrooms: 1
+  floor: Ground
+  available_from: 2026-06-17
+  contact_name: Owner User
+  phone: "+919612300002"
+  whatsapp_number: "+919612300002"
+  status: 2
+  featured: false
+  user: owner
+  views_count: 0

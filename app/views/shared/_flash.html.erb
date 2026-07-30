@@ -1,0 +1,8 @@
+<div class="fixed inset-x-0 top-24 z-50 mx-auto max-w-2xl px-4">
+  <% flash.each do |type, message| %>
+    <% next if message.blank? %>
+    <div class="mb-3 rounded-2xl border px-4 py-3 text-sm font-semibold shadow-xl backdrop-blur <%= type.to_s == "alert" ? "border-rose-200 bg-rose-50/95 text-rose-700" : "border-emerald-200 bg-emerald-50/95 text-emerald-700" %>">
+      <%= message %>
+    </div>
+  <% end %>
+</div>

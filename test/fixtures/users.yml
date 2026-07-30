@@ -1,0 +1,20 @@
+tenant:
+  email: tenant@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, "password") %>
+  name: Tenant User
+  phone: "+919612300001"
+  role: 0
+
+owner:
+  email: owner@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, "password") %>
+  name: Owner User
+  phone: "+919612300002"
+  role: 1
+
+admin:
+  email: admin@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, "password") %>
+  name: Admin User
+  phone: "+919612300003"
+  role: 2

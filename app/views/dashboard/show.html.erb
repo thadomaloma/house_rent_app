@@ -1,0 +1,72 @@
+<% content_for :title, "Owner dashboard - Inluah" %>
+
+<section class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+  <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+    <div>
+      <p class="text-xs font-black uppercase text-emerald-700">Owner dashboard</p>
+      <h1 class="text-3xl font-black tracking-tight">Welcome back, <%= current_user.name.presence || "Owner" %></h1>
+    </div>
+    <%= link_to "Add new property", new_property_path, class: "rounded-2xl bg-emerald-600 px-5 py-3 text-center text-sm font-black text-white shadow-lg shadow-emerald-600/20 hover:bg-emerald-700" %>
+  </div>
+
+  <div class="grid gap-4 md:grid-cols-3">
+    <div class="rounded-3xl bg-slate-950 p-6 text-white shadow-xl shadow-slate-950/10"><p class="text-xs font-black uppercase text-emerald-200">Listings</p><p class="mt-3 text-4xl font-black"><%= @properties.count %></p></div>
+    <div class="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-200"><p class="text-xs font-black uppercase text-slate-500">Total views</p><p class="mt-3 text-4xl font-black"><%= @total_views %></p></div>
+    <div class="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-200"><p class="text-xs font-black uppercase text-slate-500">Inquiries</p><p class="mt-3 text-4xl font-black"><%= @total_inquiries %></p></div>
+  </div>
+
+  <div class="mt-8 grid gap-6 lg:grid-cols-[1fr_360px]">
+    <div>
+      <div class="mb-4 flex items-center justify-between">
+        <h2 class="text-2xl font-black tracking-tight">My listings</h2>
+      </div>
+      <div class="space-y-4">
+        <% @properties.each do |property| %>
+          <article class="grid gap-4 rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:grid-cols-[160px_1fr_auto]">
+            <%= link_to property_path(property), class: "aspect-[4/3] overflow-hidden rounded-2xl bg-emerald-50" do %>
+              <% if property.photos.attached? %>
+                <%= image_tag property.photos.first, class: "h-full w-full object-cover", alt: property.title %>
+              <% else %>
+                <%= image_tag "/fallback-property.svg", class: "h-full w-full object-cover", alt: "Inluah property placeholder" %>
+              <% end %>
+            <% end %>
+            <div>
+              <div class="mb-2 flex flex-wrap gap-2">
+                <span class="rounded-full px-3 py-1 text-xs font-black ring-1 <%= status_badge_classes(property) %>"><%= property.status.humanize %></span>
+                <% if property.featured? %><span class="rounded-full bg-emerald-600 px-3 py-1 text-xs font-black text-white">Featured</span><% end %>
+              </div>
+              <h3 class="text-lg font-black"><%= link_to property.title, property_path(property), class: "hover:text-emerald-700" %></h3>
+              <p class="mt-1 text-sm font-semibold text-slate-500"><%= property_area_label(property) %> · <%= rupees(property.rent) %>/mo · <%= pluralize(property.inquiries.count, "inquiry") %> · <%= pluralize(property.views_count, "view") %></p>
+            </div>
+            <div class="flex items-center gap-2 sm:flex-col sm:items-stretch">
+              <%= link_to "Edit", edit_property_path(property), class: "rounded-2xl bg-slate-100 px-4 py-2 text-center text-sm font-black text-slate-700 hover:bg-emerald-50 hover:text-emerald-700" %>
+              <%= button_to "Delete", property_path(property), method: :delete, data: { turbo_confirm: "Delete this listing?" }, class: "rounded-2xl bg-rose-50 px-4 py-2 text-sm font-black text-rose-700 hover:bg-rose-100" %>
+            </div>
+          </article>
+        <% end %>
+        <% if @properties.empty? %>
+          <div class="rounded-3xl border border-dashed border-slate-300 bg-white p-10 text-center">
+            <h3 class="text-2xl font-black">No listings yet</h3>
+            <p class="mt-2 text-sm font-semibold text-slate-500">Create your first listing and start receiving inquiries.</p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <aside class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm lg:self-start">
+      <h2 class="text-2xl font-black tracking-tight">Recent inquiries</h2>
+      <div class="mt-4 space-y-3">
+        <% @recent_inquiries.each do |inquiry| %>
+          <div class="rounded-2xl bg-slate-50 p-4">
+            <p class="text-sm font-black"><%= inquiry.name %> · <%= inquiry.phone %></p>
+            <p class="mt-1 text-xs font-bold uppercase text-emerald-700"><%= inquiry.property.title %></p>
+            <p class="mt-2 text-sm leading-6 text-slate-600"><%= inquiry.message %></p>
+          </div>
+        <% end %>
+        <% if @recent_inquiries.empty? %>
+          <p class="rounded-2xl bg-slate-50 p-4 text-sm font-semibold text-slate-500">No inquiries yet.</p>
+        <% end %>
+      </div>
+    </aside>
+  </div>
+</section>
